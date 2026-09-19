@@ -5,5 +5,6 @@ export default async function MapPage({ searchParams }: PageProps<"/app/map">) {
   const { place, filter, coin } = await searchParams;
   const symbol = typeof coin === "string" ? COINS.find((c) => c.symbol === coin.toUpperCase())?.symbol : undefined;
   const initialFilter: "mine" | CoinSymbol | undefined = filter === "mine" ? "mine" : symbol;
-  return <UseMap initialPlaceId={typeof place === "string" ? place : undefined} initialFilter={initialFilter} />;
+  const initialPlaceId = typeof place === "string" ? place : undefined;
+  return <UseMap key={`${initialFilter ?? "all"}:${initialPlaceId ?? ""}`} initialPlaceId={initialPlaceId} initialFilter={initialFilter} />;
 }
