@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BlockMAP
 
-## Getting Started
+지갑에 묶여 있는 내 코인, **어디에 쓸 수 있는지** 보여주는 쓰임처 지도.
+목표는 블록체인의 대중화 — 코인을 "보는 것"에서 "써보는 것"으로.
 
-First, run the development server:
+## 컨셉
+
+- 지도는 물리 지도가 아니라 **도메인(서비스) 연결 지도**. 가상 좌표 위에 그린다.
+- **구역 = 용도** (8개): 출발지 / 환승역(L2·브릿지) / 돈 굴리기(스테이킹·예치) / 코인 바꾸기(탈중앙 거래소) / 결제·쇼핑 / 수집·티켓 / 신원·이름 / 참여·후원
+- **핀 = 검증된 공식 도메인 하나** (현재 122곳, 코인 32종). 난이도·소요 시간·최소 금액·따라하기·"해봤어요" 후기.
+- **길 = 입문 경로**. "이걸 했으면 다음엔 이걸" (`ROADS`, `QUESTS`). 지도에는 선택한 곳의 길만, 타일 아래에 깔아서 그린다 (나가는 길 실선, 들어오는 길 점선, 내가 걸은 길은 발자취로 유지).
+- **블록 지도, 좌표는 자동 배치**. 구역은 둥근 사각형 '블록', 쓰임처는 블록 안에 격자로 놓인 이름 타일이다(원형 핀을 촘촘히 박은 초기 디자인은 보기 불편해서 폐기). 블록 높이는 쓰임처 개수에 따라 늘어난다. 쓰임처는 `PLACE_DEFS`에 데이터만 추가하면 된다.
+- **줌 3단계**: 멀리서는 블록 이름·'N곳'·진행 막대만(타일은 그리지 않음) → 이름 타일 → 타일에 한 줄 설명. 블록을 누르면 그 블록으로 확대.
+- **코인 = 필터**. 보유 코인을 등록하면 갈 수 있는 곳만 밝아진다.
+- 원화 환산은 업비트 시세 조회 API(키 불필요)를 `/api/prices`에서 10초 캐시로 프록시.
+
+## 공개 페이지 (검색 유입용)
+
+| 경로 | 내용 |
+| --- | --- |
+| `/coin` | 코인 32종을 '쓸 수 있는 곳 수'로 줄 세운 랭킹 (거래소·지갑 제외) |
+| `/coin/[symbol]` | 코인 32종 전부. "리플(XRP) 사용처 — XRP로 할 수 있는 일 N가지". 코인 소개, 솔직한 한 줄 평, 구역별 '되는 것/안 되는 것', 쓰임처 목록, 필요한 지갑, 업비트 시세 |
+| `/place/[id]` | 쓰임처별 페이지. 검증된 공식 주소, 난이도·시간·최소 금액, 따라하기, 이전/다음 단계 |
+| `/sitemap.xml`, `/robots.txt` | 공개 페이지 156개 등록. `/app`, `/api`는 검색 제외 |
+
+전부 빌드 때 정적 생성된다. 구조화 데이터(ItemList, HowTo)를 포함한다. 배포 시 `NEXT_PUBLIC_SITE_URL`을 실제 주소로 설정해야 사이트맵·canonical이 맞게 나온다.
+
+## 공유 장치
+
+- 공개 페이지의 **공유하기** 버튼: 기기 공유 시트, 미지원 브라우저에서는 링크 복사 (`ShareButton`)
+- HOME의 **공유 카드**: "내 코인으로 갈 수 있는 곳 45 / 90"을 9:16 이미지로 만들어 공유·저장 (`ShareCard`). 보유 수량·금액은 넣지 않고 코인 종류만 담는다.
+- 지도는 `?coin=XRP`, `?place=ens`, `?filter=mine`으로 특정 상태를 바로 열 수 있다.
+
+## 배포
+
+- 운영 주소: https://blockmap-pi.vercel.app (Vercel 프로젝트 `blockmap`, 팀 `godavid123-3215s-projects`)
+- 다시 배포: `npx vercel deploy --prod` (CLI 로그인 필요). Git 연동은 아직 안 돼 있어 푸시로 자동 배포되지 않는다.
+- 사이트맵·canonical 주소는 Vercel이 주는 프로덕션 주소를 자동으로 쓴다. 커스텀 도메인을 붙이면 `NEXT_PUBLIC_SITE_URL`을 그 주소로 설정한다.
+
+## 실행
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000 → "지도 둘러보기"
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 구조
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| 경로 | 역할 |
+| --- | --- |
+| `src/lib/data.ts` | 코인·구역·쓰임처·길·퀘스트 시드 데이터 |
+| `src/lib/store.ts` | 보유 코인·방문·북마크·후기 (zustand, 지금은 localStorage) |
+| `src/lib/usePrices.ts` | 업비트 시세 훅 + 원화/수량 포맷 |
+| `src/app/api/prices/route.ts` | 업비트 ticker 프록시 |
+| `src/components/UseMap.tsx` | 쓰임처 지도 (SVG + 팬/줌, 블록·타일 렌더링) |
+| `src/components/PlaceSheet.tsx` | 쓰임처 상세 시트 |
+| `src/app/app/` | HOME / MAP / MY 탭 |
 
-## Learn More
+## 아직 안 된 것
 
-To learn more about Next.js, take a look at the following resources:
+- **로그인·서버 저장 없음.** 후기·방문 기록은 이 브라우저에만 남는다. Supabase(Auth: 카카오/Google, DB) 연결이 다음 단계.
+- **지갑 연결은 최소 구현.** 브라우저 지갑(EIP-1193)에서 주소와 ETH 잔액만 읽는다. 서명·전송 요청 없음.
+- **오프라인 레이어 없음.** `offline: true`인 쓰임처를 카카오맵으로 잇는 뷰는 미구현.
+- **시드 데이터는 초안.** 도메인은 2026-09-18~19에 응답 여부를 확인했고, 결제·후원처의 '받는 코인'(비트리필·코인게이트·트라발라·더 기빙 블록·물바드·토르 프로젝트·인터넷 아카이브)은 공식 페이지에서 확인했다. 도메인 이전도 반영했다(코빗 → digitalx.miraeasset.com, jumper.exchange → jumper.xyz). 3차(코인별 재검증)로 넣은 32곳은 도메인 응답과 사이트 제목으로 정체를 확인했고, 일부는 각 체인의 공식 앱 목록(헤데라·카르다노)에서 이름을 교차 확인했다. 재검증 중 확인한 변화: 카르다노 JPG Store → Wayup 이전(미등록), 월드 앱 → 'World Money' 개편, avvy.domains·doppler.fi 무응답(미등록). 그 밖의 금액·절차·코인 목록(지갑 지원 코인 등)은 미검증이다. 출시 전에 도메인·금액·절차를 사람이 전부 재검증하고, 시드 후기는 화면에 **'예시'**로 표시되고 후기 개수에 세지 않는다(`sample: true`). 실제 후기가 쌓이면 지운다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 선 긋기
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+BlockMAP은 쓰임처를 **안내**하고 후기를 모은다. 결제·교환을 직접 **중개**하지 않고, 투자 조언을 하지 않는다.
