@@ -34,7 +34,8 @@
 ## 배포
 
 - 운영 주소: https://blockmap-pi.vercel.app (Vercel 프로젝트 `blockmap`, 팀 `godavid123-3215s-projects`)
-- 다시 배포: `npx vercel deploy --prod` (CLI 로그인 필요). Git 연동은 아직 안 돼 있어 푸시로 자동 배포되지 않는다.
+- 저장소: https://github.com/Kairose-master/BlockMAP (Vercel과 연결됨). `main`에 푸시하면 프로덕션에 자동 배포되고, 다른 브랜치는 미리보기 주소로 배포된다.
+- 수동 배포: `npx vercel deploy --prod` (CLI 로그인 필요)
 - 사이트맵·canonical 주소는 Vercel이 주는 프로덕션 주소를 자동으로 쓴다. 커스텀 도메인을 붙이면 `NEXT_PUBLIC_SITE_URL`을 그 주소로 설정한다.
 
 ## 실행
