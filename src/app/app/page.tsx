@@ -40,16 +40,20 @@ export default function HomePage() {
     <main className="no-scrollbar h-full overflow-y-auto pb-28">
       <header className="flex items-center justify-between px-5 pt-6">
         <Logo />
+        <span className="rounded-full border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-[10px] font-bold tracking-[0.08em] text-ink-3">
+          122 VERIFIED
+        </span>
       </header>
 
-      <section className="px-5 pt-6">
-        <h1 className="text-2xl font-extrabold">반가워요, {nickname}님</h1>
-        <p className="mt-1 text-sm text-ink-2">오늘은 코인을 &lsquo;보는&rsquo; 대신 &lsquo;써볼&rsquo; 차례예요.</p>
+      <section className="px-5 pt-8">
+        <p className="text-[11px] font-bold tracking-[0.12em] text-lime uppercase">Your utility map</p>
+        <h1 className="mt-2 text-[28px] font-extrabold tracking-[-0.04em]">반가워요, {nickname}님</h1>
+        <p className="mt-1 text-sm leading-6 text-ink-2">오늘은 코인을 &lsquo;보는&rsquo; 대신 &lsquo;써볼&rsquo; 차례예요.</p>
       </section>
 
       <section className="px-5 pt-5">
         {mine.length === 0 ? (
-          <Link href="/app/my" className="block rounded-3xl border border-line bg-surface p-5 active:opacity-80">
+          <Link href="/app/my" className="glass-panel block rounded-[26px] p-5 active:opacity-80">
             <p className="text-[15px] font-bold">어떤 코인을 갖고 있나요?</p>
             <p className="mt-1 text-sm text-ink-2">보유 코인을 알려주면 갈 수 있는 곳만 지도에 밝혀드려요.</p>
             <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-lime">
@@ -57,14 +61,14 @@ export default function HomePage() {
             </span>
           </Link>
         ) : (
-          <div className="rounded-3xl bg-lime p-5 text-lime-ink">
-            <p className="text-xs font-bold opacity-70">지갑에서 잠자는 내 코인 · 업비트 시세</p>
+          <div className="overflow-hidden rounded-[26px] border border-lime/20 bg-[radial-gradient(circle_at_90%_0%,rgba(120,247,197,0.22),transparent_45%),linear-gradient(145deg,#10211d,#0d1518)] p-5 text-ink shadow-[0_24px_60px_rgba(0,0,0,0.28)]">
+            <p className="text-xs font-bold text-lime/75">지갑에서 잠자는 내 코인 · 업비트 시세</p>
             <p className="mt-1 text-3xl font-extrabold">{total > 0 ? formatKRW(total) : "—"}</p>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {mine.map((s) => {
                 const rate = prices[s]?.changeRate;
                 return (
-                  <span key={s} className="rounded-full bg-black/10 px-2.5 py-1 text-xs font-bold">
+                  <span key={s} className="rounded-full border border-white/10 bg-white/[0.06] px-2.5 py-1 text-xs font-bold">
                     {s} {holdings[s]}
                     {rate !== undefined && <span className="opacity-60"> {rate >= 0 ? "+" : ""}{(rate * 100).toFixed(1)}%</span>}
                   </span>
@@ -72,11 +76,11 @@ export default function HomePage() {
               })}
             </div>
             <div className="mt-4 flex gap-2">
-              <Link href="/app/map?filter=mine" className="flex h-12 min-w-0 flex-1 items-center justify-between rounded-2xl bg-lime-ink px-4 text-sm font-bold text-lime">
+              <Link href="/app/map?filter=mine" className="flex h-12 min-w-0 flex-1 items-center justify-between rounded-2xl bg-lime px-4 text-sm font-bold text-lime-ink">
                 <span className="truncate">이 코인으로 갈 수 있는 곳 {reachable.length}곳</span>
                 <ArrowRight size={18} className="shrink-0" />
               </Link>
-              <button type="button" aria-label="공유 카드 만들기" onClick={() => setSharing(true)} className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-lime-ink text-lime">
+              <button type="button" aria-label="공유 카드 만들기" onClick={() => setSharing(true)} className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-lime">
                 <Share2 size={18} />
               </button>
             </div>
@@ -91,7 +95,7 @@ export default function HomePage() {
             const done = q.placeIds.filter((id) => visited[id]).length;
             const next = q.placeIds.find((id) => !visited[id]) ?? q.placeIds[0];
             return (
-              <Link key={q.id} href={`/app/map?place=${next}`} className="w-[240px] shrink-0 rounded-3xl border border-line bg-surface p-4 active:opacity-80">
+              <Link key={q.id} href={`/app/map?place=${next}`} className="glass-panel w-[240px] shrink-0 rounded-[24px] p-4 active:opacity-80">
                 <p className="text-[15px] font-bold">{q.title}</p>
                 <p className="mt-0.5 text-xs text-ink-2">{q.desc}</p>
                 <ol className="mt-3 space-y-1.5">
@@ -118,7 +122,7 @@ export default function HomePage() {
         <ul className="mt-3 space-y-2">
           {easyPicks.map((p) => (
             <li key={p.id}>
-              <Link href={`/app/map?place=${p.id}`} className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-3.5 active:opacity-80">
+              <Link href={`/app/map?place=${p.id}`} className="flex items-center gap-3 rounded-2xl border border-white/[0.055] bg-surface/75 px-4 py-3.5 active:opacity-80">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[15px] font-bold">{p.action}</p>
                   <p className="mt-0.5 truncate text-xs text-ink-2">
@@ -139,7 +143,7 @@ export default function HomePage() {
         <ul className="mt-3 space-y-1.5">
           {shownRanking.map(({ coin: c, count }) => (
             <li key={c.symbol}>
-              <Link href={`/coin/${c.symbol.toLowerCase()}`} className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-3 active:opacity-80">
+              <Link href={`/coin/${c.symbol.toLowerCase()}`} className="flex items-center gap-3 rounded-2xl border border-white/[0.05] bg-surface/70 px-4 py-3 active:opacity-80">
                 <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: c.color }} />
                 <span className="w-24 shrink-0 truncate text-sm font-bold">{c.name}</span>
                 <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-2">
@@ -165,7 +169,7 @@ export default function HomePage() {
         <ul className="mt-3 space-y-2">
           {recentReviews.map(({ placeId, rv }) => (
             <li key={rv.id}>
-              <Link href={`/app/map?place=${placeId}`} className="block rounded-2xl bg-surface px-4 py-3.5 active:opacity-80">
+              <Link href={`/app/map?place=${placeId}`} className="block rounded-2xl border border-white/[0.05] bg-surface/70 px-4 py-3.5 active:opacity-80">
                 <p className="text-xs font-bold text-lime">{PLACE_BY_ID[placeId].action}</p>
                 <p className="mt-1 text-[15px] leading-relaxed">{rv.body}</p>
                 <p className="mt-1.5 text-xs text-ink-3">

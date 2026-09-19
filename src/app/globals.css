@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #0b0b0d;
-  --color-surface: #17171b;
-  --color-surface-2: #212127;
-  --color-line: #2c2c34;
-  --color-ink: #f4f4f5;
-  --color-ink-2: #a1a1aa;
-  --color-ink-3: #6b6b76;
-  --color-lime: #c8f751;
-  --color-lime-ink: #1a2400;
+  --color-bg: #070a0e;
+  --color-surface: #0f151c;
+  --color-surface-2: #151e27;
+  --color-line: #25313d;
+  --color-ink: #f4f8fb;
+  --color-ink-2: #a4b2bf;
+  --color-ink-3: #687683;
+  --color-lime: #78f7c5;
+  --color-lime-ink: #051611;
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
 }
@@ -20,11 +20,65 @@ body {
 }
 
 body {
-  background: #050506;
+  background:
+    radial-gradient(circle at 50% -20%, rgba(38, 116, 103, 0.22), transparent 36rem),
+    #030507;
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(120, 247, 197, 0.28);
+  color: var(--color-ink);
+}
+
+button,
+a,
+input,
+textarea {
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+button:active,
+a:active {
+  transform: scale(0.985);
+}
+
+.app-shell {
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 85% 6%, rgba(95, 224, 186, 0.08), transparent 18rem),
+    linear-gradient(180deg, #090d12 0%, var(--color-bg) 44%, #06090c 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.045),
+    0 32px 120px rgba(0, 0, 0, 0.72);
+}
+
+.glass-panel {
+  background: linear-gradient(145deg, rgba(21, 30, 39, 0.92), rgba(11, 17, 23, 0.78));
+  border: 1px solid rgba(143, 168, 184, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 18px 50px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
+}
+
+.hairline-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.text-balance {
+  text-wrap: balance;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -45,7 +99,26 @@ body {
   }
 }
 .sheet-up {
-  animation: sheet-up 0.22s ease-out;
+  animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes rise-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.rise-in-delay {
+  animation: rise-in 0.55s 0.09s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes pin-pulse {
@@ -64,6 +137,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .sheet-up,
+  .rise-in,
+  .rise-in-delay,
   .pin-pulse {
     animation: none;
   }

@@ -9,7 +9,7 @@ import { heldSymbols, useStore } from "@/lib/store";
 const W = 1080;
 const H = 1920;
 const FONT = '"Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif';
-const LIME = "#c8f751";
+const LIME = "#78f7c5";
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
@@ -48,21 +48,21 @@ export function ShareCard({ onClose }: { onClose: () => void }) {
       }
       if (cancelled) return;
 
-      ctx.fillStyle = "#0b0b0d";
+      ctx.fillStyle = "#070a0e";
       ctx.fillRect(0, 0, W, H);
 
       // 은은한 점 무늬 대신 블록 무늬
-      ctx.fillStyle = "#121216";
+      ctx.fillStyle = "#0d141b";
       for (let y = 0; y < H; y += 120) for (let x = (y / 120) % 2 === 0 ? 0 : 60; x < W; x += 120) ctx.fillRect(x + 8, y + 8, 44, 44);
 
       ctx.textBaseline = "alphabetic";
       ctx.font = `800 52px ${FONT}`;
-      ctx.fillStyle = "#f4f4f5";
+      ctx.fillStyle = "#f4f8fb";
       ctx.fillText("BLOCK", 90, 170);
       ctx.fillStyle = LIME;
       ctx.fillText("MAP", 90 + ctx.measureText("BLOCK").width, 170);
 
-      ctx.fillStyle = "#f4f4f5";
+      ctx.fillStyle = "#f4f8fb";
       ctx.font = `800 84px ${FONT}`;
       ctx.fillText("내 코인으로", 90, 330);
       ctx.fillText("갈 수 있는 곳", 90, 436);
@@ -72,7 +72,7 @@ export function ShareCard({ onClose }: { onClose: () => void }) {
       const big = String(reachable.length);
       ctx.fillText(big, 80, 720);
       const bigW = ctx.measureText(big).width;
-      ctx.fillStyle = "#a1a1aa";
+      ctx.fillStyle = "#a4b2bf";
       ctx.font = `700 76px ${FONT}`;
       ctx.fillText(`/ ${PLACES.length}곳`, 104 + bigW, 720);
 
@@ -105,12 +105,12 @@ export function ShareCard({ onClose }: { onClose: () => void }) {
         ctx.fillStyle = `hsl(${d.hue} 60% 75%)`;
         ctx.font = `700 40px ${FONT}`;
         ctx.fillText(d.name, 90, y);
-        ctx.fillStyle = "#a1a1aa";
+        ctx.fillStyle = "#a4b2bf";
         ctx.font = `600 36px ${FONT}`;
         const count = `${lit} / ${total}`;
         ctx.fillText(count, W - 90 - ctx.measureText(count).width, y);
         roundRect(ctx, 90, y + 22, W - 180, 18, 9);
-        ctx.fillStyle = "#212127";
+        ctx.fillStyle = "#151e27";
         ctx.fill();
         if (lit > 0) {
           roundRect(ctx, 90, y + 22, Math.max(((W - 180) * lit) / total, 18), 18, 9);
@@ -120,11 +120,11 @@ export function ShareCard({ onClose }: { onClose: () => void }) {
         y += gap;
       }
 
-      ctx.fillStyle = "#f4f4f5";
+      ctx.fillStyle = "#f4f8fb";
       ctx.font = `700 44px ${FONT}`;
       ctx.fillText(`그중 해본 곳 ${visitedCount}곳`, 90, H - 250);
 
-      ctx.fillStyle = "#a1a1aa";
+      ctx.fillStyle = "#a4b2bf";
       ctx.font = `600 40px ${FONT}`;
       ctx.fillText("내 코인은 어디에 쓸 수 있을까?", 90, H - 150);
       ctx.fillStyle = LIME;

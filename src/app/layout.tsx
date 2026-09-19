@@ -13,7 +13,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#0b0b0d",
+  themeColor: "#070a0e",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="h-full">
-        <div className="mx-auto h-full w-full max-w-[480px] bg-bg relative overflow-hidden">
+        <div className="app-shell relative mx-auto h-full w-full max-w-[480px] overflow-hidden">
           {children}
         </div>
       </body>

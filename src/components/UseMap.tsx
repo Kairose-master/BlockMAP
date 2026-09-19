@@ -198,7 +198,7 @@ export function UseMap({ initialPlaceId, initialFilter }: { initialPlaceId?: str
   );
 
   return (
-    <div ref={boxRef} className="absolute inset-0 overflow-hidden bg-bg" style={{ ["--inv" as string]: 1 / fitScale }}>
+    <div ref={boxRef} className="absolute inset-0 overflow-hidden bg-[radial-gradient(circle_at_50%_34%,#101922_0%,#080c11_52%,#06080b_100%)]" style={{ ["--inv" as string]: 1 / fitScale }}>
       {size && (
         <TransformWrapper
           ref={zoomRef}
@@ -227,7 +227,7 @@ export function UseMap({ initialPlaceId, initialFilter }: { initialPlaceId?: str
             >
               <defs>
                 <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <circle cx="2" cy="2" r="1.5" fill="#1d1d23" />
+                  <circle cx="2" cy="2" r="1.25" fill="#25313a" />
                 </pattern>
               </defs>
               <rect x={-2000} y={-2000} width={WORLD.width + 4000} height={WORLD.height + 4000} fill="url(#dots)" />
@@ -245,13 +245,13 @@ export function UseMap({ initialPlaceId, initialFilter }: { initialPlaceId?: str
                       width={d.w}
                       height={d.h}
                       rx={28}
-                      fill={`hsl(${d.hue} 35% ${showNames ? 10 : 9 + ratio * 5}%)`}
-                      stroke={`hsl(${d.hue} 45% 28%)`}
+                      fill={`hsl(${d.hue} 22% ${showNames ? 10 : 9 + ratio * 4}%)`}
+                      stroke={`hsl(${d.hue} 34% 26%)`}
                       style={{ strokeWidth: "calc(1.5px * var(--inv))" }}
                     />
                     {showNames ? (
                       <>
-                        <text x={d.x + 26} y={d.y + 50} fontSize={30} fontWeight={800} fill={`hsl(${d.hue} 60% 72%)`}>
+                        <text x={d.x + 26} y={d.y + 50} fontSize={30} fontWeight={800} fill={`hsl(${d.hue} 44% 73%)`}>
                           {d.name}
                         </text>
                         <text x={d.x + d.w - 26} y={d.y + 48} textAnchor="end" fontSize={17} fill={`hsl(${d.hue} 35% 58%)`}>
@@ -260,7 +260,7 @@ export function UseMap({ initialPlaceId, initialFilter }: { initialPlaceId?: str
                       </>
                     ) : (
                       <>
-                        <text x={d.x + d.w / 2} y={d.y + d.h / 2 - 8} textAnchor="middle" fontSize={54} fontWeight={800} fill={`hsl(${d.hue} 60% 74%)`}>
+                        <text x={d.x + d.w / 2} y={d.y + d.h / 2 - 8} textAnchor="middle" fontSize={54} fontWeight={800} fill={`hsl(${d.hue} 44% 74%)`}>
                           {d.name}
                         </text>
                         <text x={d.x + d.w / 2} y={d.y + d.h / 2 + 40} textAnchor="middle" fontSize={32} fontWeight={600} fill={`hsl(${d.hue} 35% 60%)`}>
@@ -327,7 +327,7 @@ export function UseMap({ initialPlaceId, initialFilter }: { initialPlaceId?: str
                       width={p.w}
                       height={TILE.h}
                       rx={16}
-                      fill={isSelected ? "var(--color-lime)" : isVisited ? "#232b12" : "#1a1a20"}
+                      fill={isSelected ? "var(--color-lime)" : isVisited ? "#11231f" : "#121a21"}
                       stroke={highlighted ? "var(--color-lime)" : "#30303a"}
                       style={{ strokeWidth: `calc(${isSelected || isNext ? 2 : 1.2}px * var(--inv))` }}
                     />
@@ -379,7 +379,7 @@ export function UseMap({ initialPlaceId, initialFilter }: { initialPlaceId?: str
             onChange={(e) => setQuery(e.target.value)}
             placeholder="하고 싶은 일이나 서비스를 검색하세요"
             aria-label="쓰임처 검색"
-            className="h-12 w-full rounded-full border border-line bg-surface/95 pl-11 pr-10 text-[15px] text-ink placeholder:text-ink-3 outline-none backdrop-blur focus:border-lime"
+            className="glass-panel h-12 w-full rounded-2xl pl-11 pr-10 text-[15px] text-ink placeholder:text-ink-3 outline-none focus:border-lime/60"
           />
           {query && (
             <button type="button" aria-label="검색어 지우기" onClick={() => setQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-ink-2">
@@ -387,7 +387,7 @@ export function UseMap({ initialPlaceId, initialFilter }: { initialPlaceId?: str
             </button>
           )}
           {query.trim() && (
-            <ul className="absolute inset-x-0 top-14 overflow-hidden rounded-2xl border border-line bg-surface">
+            <ul className="glass-panel absolute inset-x-0 top-14 overflow-hidden rounded-2xl">
               {results.length === 0 && <li className="px-4 py-3 text-sm text-ink-3">아직 지도에 없는 곳이에요</li>}
               {results.map((p) => (
                 <li key={p.id}>
@@ -449,8 +449,8 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-semibold backdrop-blur ${
-        active ? "border-lime bg-lime text-lime-ink" : "border-line bg-surface/90 text-ink-2"
+      className={`flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-[13px] font-semibold backdrop-blur-xl ${
+        active ? "border-lime/60 bg-lime text-lime-ink" : "border-white/[0.08] bg-[#0d141b]/88 text-ink-2"
       }`}
     >
       {children}
@@ -465,8 +465,8 @@ function RoundButton({ label, active, onClick, children }: { label: string; acti
       aria-label={label}
       aria-pressed={active}
       onClick={onClick}
-      className={`flex h-12 w-12 items-center justify-center rounded-full border border-line backdrop-blur ${
-        active ? "bg-lime text-lime-ink" : "bg-surface/95 text-ink"
+      className={`flex h-12 w-12 items-center justify-center rounded-2xl border backdrop-blur-xl ${
+        active ? "border-lime/50 bg-lime text-lime-ink" : "border-white/[0.08] bg-[#0d141b]/88 text-ink"
       }`}
     >
       {children}

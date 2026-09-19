@@ -40,7 +40,7 @@ export function PlaceSheet({ place, onClose, onGo, sheetRef }: Props) {
     <section
       ref={sheetRef}
       aria-label={`${place.name} 상세`}
-      className={`sheet-up absolute inset-x-0 bottom-0 z-40 flex flex-col rounded-t-[28px] border-t border-line bg-surface ${expanded ? "max-h-[78%]" : ""}`}
+      className={`sheet-up absolute inset-x-0 bottom-0 z-40 flex flex-col rounded-t-[30px] border-t border-white/10 bg-[#0d141b]/96 shadow-[0_-24px_70px_rgba(0,0,0,0.5)] backdrop-blur-xl ${expanded ? "max-h-[78%]" : ""}`}
     >
       <button
         type="button"

@@ -41,9 +41,9 @@ export default function MyPage() {
   };
 
   return (
-    <main className="no-scrollbar h-full overflow-y-auto px-5 pb-28 pt-6">
+    <main className="no-scrollbar hairline-grid h-full overflow-y-auto px-5 pb-28 pt-8">
       <section className="flex flex-col items-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-surface-2 text-3xl font-extrabold text-lime">
+        <div className="flex h-20 w-20 items-center justify-center rounded-[26px] border border-lime/20 bg-[radial-gradient(circle_at_30%_20%,rgba(120,247,197,0.22),transparent_55%),#111a21] text-3xl font-extrabold text-lime shadow-[0_16px_40px_rgba(0,0,0,0.3)]">
           {nickname.slice(0, 1)}
         </div>
         <input
@@ -67,7 +67,7 @@ export default function MyPage() {
             const amount = holdings[c.symbol] ?? 0;
             const price = prices[c.symbol]?.price;
             return (
-              <li key={c.symbol} className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-2.5">
+              <li key={c.symbol} className="flex items-center gap-3 rounded-2xl border border-white/[0.05] bg-surface/75 px-4 py-2.5">
                 <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: c.color }} />
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-bold">{c.name}</p>
@@ -92,7 +92,7 @@ export default function MyPage() {
 
       <section className="pt-8">
         <h2 className="text-lg font-extrabold">지갑 연결 <span className="text-xs font-semibold text-ink-3">선택</span></h2>
-        <div className="mt-3 rounded-2xl bg-surface p-4">
+        <div className="glass-panel mt-3 rounded-2xl p-4">
           {walletAddress ? (
             <p className="flex items-center gap-2 text-sm font-bold text-lime">
               <Wallet size={16} />
@@ -122,7 +122,7 @@ export default function MyPage() {
             const done = inDistrict.filter((p) => visited[p.id]).length;
             const unlocked = done > 0;
             return (
-              <li key={d.id} className="flex flex-col items-center rounded-2xl bg-surface px-1 py-3 text-center">
+              <li key={d.id} className="flex flex-col items-center rounded-2xl border border-white/[0.05] bg-surface/70 px-1 py-3 text-center">
                 <span
                   className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-extrabold"
                   style={
